@@ -5,3 +5,56 @@ OPENX_USERNAME = 'username'
 OPENX_PASSWORD = 'password'
 
 
+From Google code:
+
+OpenX will feature a new API to manage publishers, zones, advertisers, ... via XML-RPC (https://developer.openx.org/wiki/display/DOCS/OpenX+API+Tutorial). This django application will provide a simple layer to wrap the calls to OpenX inside objects.
+
+Currently there is no real validation of the data, but simple requests are useable (create objects, link banners to zones, ...).
+
+Outdated Example (code reformatted to fit your screen):
+{{{
+>>> from django_openx import Zone
+>>> z = Zone.get(2)
+>>> z.generate_tag()
+'<!--/* OpenX Javascript Tag v2.5.70-beta */-->\n\n<script type=\'text/javascript\'>[...]'
+>>> z.publisher
+{
+	'publisherName': 'Some Publisher',
+	'contactName': '',
+	'agencyId': 1,
+	'emailAddress': 'foo@bar.tld',
+	'publisherId': 2,
+	'accountId': 6
+}
+>>> p = z.publisher
+>>> p.zones
+[
+	{
+		'width': 468,
+		'zoneName': 'Some Zone',
+		'type': 0,
+		'zoneId': 2,
+		'publisherId': 2,
+		'height': 60
+	},
+	{
+		'width': 250,
+		'zoneName': 'Another Zone',
+		'type': 0,
+		'zoneId': 1,
+		'publisherId': 2,
+		'height': 250
+	}
+]
+}}}
+
+Things still missing (contributions welcome):
+ * Documentation (for now, just put django_openx into sys.path and read the source)
+ * Better support for OpenX statistics
+ * Support for getting banners via XML-RPC (XML-RPC ad delivery)
+ * Validation of data in objects or wrapping of XML-RPC exceptions to make working with API easier
+ * unittests
+ 
+ 
+ 
+LICENSE: MIT
